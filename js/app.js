@@ -10,7 +10,7 @@ function nav() {
     navItem.textContent = section.getAttribute("data-nav");
     navItem.dataset.link = section.id;
 
-    //Section 1 button as active by default
+    // Section 1 button as active by default
     if (index === 0) {
       navItem.classList.add("active");
     }
@@ -20,7 +20,7 @@ function nav() {
   navbar.appendChild(fragment);
 }
 
-// Show only the clicked section
+// Show the clicked section
 function showSection(event) {
   if (event.target.tagName === "LI") {
     const sectionId = event.target.dataset.link;
@@ -29,17 +29,17 @@ function showSection(event) {
     const navItems = navbar.querySelectorAll("li");
     navItems.forEach((item) => item.classList.remove("active"));
 
-    // Highlight the clicked button
+    // Highlight the clicked
     event.target.classList.add("active");
 
-    // Hide all sections and show only the clicked one
+    // Hide all show the clicked 
     sections.forEach((section) => {
       if (section.id === sectionId) {
-        section.style.display = "block"; // Show the clicked section
-        section.style.opacity = "1"; // Ensure it's visible
-        section.style.visibility = "visible"; // Ensure visibility
+        section.style.display = "block"; 
+        section.style.opacity = "1";
+        section.style.visibility = "visible";
       } else {
-        section.style.display = "none"; // Hide other sections
+        section.style.display = "none"; // Hide other 
       }
     });
 
@@ -49,22 +49,43 @@ function showSection(event) {
   }
 }
 
-// Initialize the page with only Section 1 visible
+//section in view as the user scrolls
+function scrolling() {
+  let currentSectionId = "";
+  sections.forEach((section) => {
+    const rect = section.getBoundingClientRect();
+    if (rect.top >= -100 && rect.top <= window.innerHeight / 2) {
+      currentSectionId = section.id;
+    }
+  });
+
+  if (currentSectionId) {
+    const navItems = navbar.querySelectorAll("li");
+    navItems.forEach((item) => {
+      item.classList.remove("active");
+      if (item.dataset.link === currentSectionId) {
+        item.classList.add("active");
+      }
+    });
+  }
+}
+
+
 function initializePage() {
   sections.forEach((section, index) => {
     if (index === 0) {
-      section.style.display = "block"; // Show Section 1
+      section.style.display = "block"; 
       section.style.opacity = "1";
       section.style.visibility = "visible";
     } else {
-      section.style.display = "none"; // Hide all other sections
+      section.style.display = "none"; 
     }
   });
 }
 
 
 navbar.addEventListener("click", showSection);
-
+window.addEventListener("scroll", scrolling);
 
 initializePage();
 nav();
