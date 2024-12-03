@@ -1,5 +1,5 @@
-## Multi-Section Landing Page
-A dynamic, responsive landing page with active section highlighting and smooth scrolling.
+## Landing Page
+A dynamic, responsive landing page with active sections.
 
 ### Features
 - Dynamic navigation bar.
