@@ -20,7 +20,7 @@ function nav() {
   navbar.appendChild(fragment);
 }
 
-// Show the clicked section
+
 function showSection(event) {
   if (event.target.tagName === "LI") {
     const sectionId = event.target.dataset.link;
@@ -29,37 +29,51 @@ function showSection(event) {
     const navItems = navbar.querySelectorAll("li");
     navItems.forEach((item) => item.classList.remove("active"));
 
-    // Highlight the clicked
+    // Highlight the clicked button
     event.target.classList.add("active");
 
-    // Hide all show the clicked 
+    // Hide all  and show the wanted
     sections.forEach((section) => {
       if (section.id === sectionId) {
-        section.style.display = "block"; 
+        section.style.display = "block"; // Show the wanted section
         section.style.opacity = "1";
         section.style.visibility = "visible";
       } else {
-        section.style.display = "none"; // Hide other 
+        section.style.display = "none"; // Hide  sections
       }
     });
 
-    // Scroll smoothly to the selected section
     const section = document.getElementById(sectionId);
     section.scrollIntoView({ behavior: "smooth" });
   }
 }
 
-//section in view as the user scrolls
+// Function for scrolling 
 function scrolling() {
   let currentSectionId = "";
+  let smallestOffset = window.innerHeight; 
+
   sections.forEach((section) => {
     const rect = section.getBoundingClientRect();
-    if (rect.top >= -100 && rect.top <= window.innerHeight / 2) {
+    const offset = Math.abs(rect.top);
+
+    if (offset < smallestOffset) {
+      smallestOffset = offset;
       currentSectionId = section.id;
     }
   });
 
   if (currentSectionId) {
+    // Show the wanted section
+    sections.forEach((section) => {
+      if (section.id === currentSectionId) {
+        section.style.display = "block"; // Show section when it's in view
+        section.style.opacity = "1";
+        section.style.visibility = "visible";
+      } else {
+        section.style.display = "none"; // Hide sections
+      }
+    });
     const navItems = navbar.querySelectorAll("li");
     navItems.forEach((item) => {
       item.classList.remove("active");
@@ -70,7 +84,7 @@ function scrolling() {
   }
 }
 
-
+//  the page with only Section 1 
 function initializePage() {
   sections.forEach((section, index) => {
     if (index === 0) {
@@ -78,7 +92,7 @@ function initializePage() {
       section.style.opacity = "1";
       section.style.visibility = "visible";
     } else {
-      section.style.display = "none"; 
+      section.style.display = "none";
     }
   });
 }
