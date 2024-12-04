@@ -14,12 +14,10 @@ function nav() {
   navbar.appendChild(fragment);
 }
 
-// click and scrolling
+// Click and scrolling
 function showSection(event) {
   if (event.target.tagName === "LI") {
     const sectionId = event.target.dataset.link;
-
-    // scroll to wanted section
     const section = document.getElementById(sectionId);
     section.scrollIntoView({ behavior: "smooth" });
 
@@ -27,20 +25,23 @@ function showSection(event) {
   }
 }
 
-// update active states on scrolling
+// Update active states on scrolling
 function scrolling() {
-  let thisidd = "";
+  let sectionId = ""; 
   sections.forEach((section) => {
     const rect = section.getBoundingClientRect();
     if (rect.top >= -200 && rect.top <= 200) {
-      thisidd = section.id;
+      sectionId = section.id; 
+      section.classList.add("active");
+    } else {
+      section.classList.remove("active");
     }
   });
 
-  // Update active state
+  // Update active state in navbar
   const navsections = navbar.querySelectorAll("li");
   navsections.forEach((item) => {
-    if (item.dataset.link === thisidd) {
+    if (item.dataset.link === sectionId) {
       item.classList.add("active");
     } else {
       item.classList.remove("active");
@@ -49,9 +50,9 @@ function scrolling() {
 }
 
 function initializePage() {
-  nav(); 
-  navbar.addEventListener("click", showSection); 
-    window.addEventListener("scroll", scrolling); 
+  nav(); // Build navbar
+  navbar.addEventListener("click", showSection);
+  window.addEventListener("scroll", scrolling); 
 }
 
 initializePage();
