@@ -5,101 +5,53 @@ const sections = document.querySelectorAll("section");
 // Build navigation dynamically
 function nav() {
   const fragment = document.createDocumentFragment();
-  sections.forEach((section, index) => {
+  sections.forEach((section) => {
     const navItem = document.createElement("li");
     navItem.textContent = section.getAttribute("data-nav");
     navItem.dataset.link = section.id;
-
-    // Section 1 button as active by default
-    if (index === 0) {
-      navItem.classList.add("active");
-    }
-
     fragment.appendChild(navItem);
   });
   navbar.appendChild(fragment);
 }
 
-
+// click and scrolling
 function showSection(event) {
   if (event.target.tagName === "LI") {
     const sectionId = event.target.dataset.link;
 
-    // Remove active class from all nav buttons
-    const navItems = navbar.querySelectorAll("li");
-    navItems.forEach((item) => item.classList.remove("active"));
-
-    // Highlight the clicked button
-    event.target.classList.add("active");
-
-    // Hide all  and show the wanted
-    sections.forEach((section) => {
-      if (section.id === sectionId) {
-        section.style.display = "block"; // Show the wanted section
-        section.style.opacity = "1";
-        section.style.visibility = "visible";
-      } else {
-        section.style.display = "none"; // Hide  sections
-      }
-    });
-
+    // scroll to wanted section
     const section = document.getElementById(sectionId);
     section.scrollIntoView({ behavior: "smooth" });
+
+    event.preventDefault();
   }
 }
 
-// Function for scrolling 
+// update active states on scrolling
 function scrolling() {
-  let currentSectionId = "";
-  let smallestOffset = window.innerHeight; 
-
+  let thisidd = "";
   sections.forEach((section) => {
     const rect = section.getBoundingClientRect();
-    const offset = Math.abs(rect.top);
-
-    if (offset < smallestOffset) {
-      smallestOffset = offset;
-      currentSectionId = section.id;
+    if (rect.top >= -200 && rect.top <= 200) {
+      thisidd = section.id;
     }
   });
 
-  if (currentSectionId) {
-    // Show the wanted section
-    sections.forEach((section) => {
-      if (section.id === currentSectionId) {
-        section.style.display = "block"; // Show section when it's in view
-        section.style.opacity = "1";
-        section.style.visibility = "visible";
-      } else {
-        section.style.display = "none"; // Hide sections
-      }
-    });
-    const navItems = navbar.querySelectorAll("li");
-    navItems.forEach((item) => {
-      item.classList.remove("active");
-      if (item.dataset.link === currentSectionId) {
-        item.classList.add("active");
-      }
-    });
-  }
-}
-
-//  the page with only Section 1 
-function initializePage() {
-  sections.forEach((section, index) => {
-    if (index === 0) {
-      section.style.display = "block"; 
-      section.style.opacity = "1";
-      section.style.visibility = "visible";
+  // Update active state
+  const navsections = navbar.querySelectorAll("li");
+  navsections.forEach((item) => {
+    if (item.dataset.link === thisidd) {
+      item.classList.add("active");
     } else {
-      section.style.display = "none";
+      item.classList.remove("active");
     }
   });
 }
 
-
-navbar.addEventListener("click", showSection);
-window.addEventListener("scroll", scrolling);
+function initializePage() {
+  nav(); 
+  navbar.addEventListener("click", showSection); 
+    window.addEventListener("scroll", scrolling); 
+}
 
 initializePage();
-nav();
